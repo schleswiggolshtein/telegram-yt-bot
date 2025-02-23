@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    env_file:
+      - .env
+    depends_on:
+      - telegram-api
+    volumes:
+      - ./data:/data  # Для сохранения загруженных файлов
+    environment:
+      - TELOXIDE_TOKEN=${TELOXIDE_TOKEN}
+      - TELOXIDE_API_URL=http://telegram-api:8081/bot
+
+  telegram-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      - API_ID=<API_ID>
+      - API_HASH=<API_HASH>
+    ports:
+      - "8081:8081"
